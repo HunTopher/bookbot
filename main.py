@@ -1,22 +1,36 @@
 from stats import (
-    count_words, 
-    get_book_text, 
-    count_characters, 
-    sorted_dictionaries
+    get_num_words,
+    chars_dict_to_sorted_list,
+    get_chars_dict,
 )
 
+
 def main():
-    filepath = "books/frankenstein.txt"
-    text = get_book_text(filepath)
-    total = count_words(text)
-    counts = count_characters(text)
-    order = sorted_dictionaries(counts)
+    book_path = "books/frankenstein.txt"
+    text = get_book_text(book_path)
+    num_words = get_num_words(text)
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
+    print_report(book_path, num_words, chars_sorted_list)
+
+
+def get_book_text(path):
+    with open(path) as f:
+        return f.read()
+
+
+def print_report(book_path, num_words, chars_sorted_list):
     print("============ BOOKBOT ============")
-    print("Analyzing book found at", filepath,"...")
+    print(f"Analyzing book found at {book_path}...")
     print("----------- Word Count ----------")
-    print(f"{total} words found in the document")
+    print(f"Found {num_words} total words")
     print("--------- Character Count -------")
-    print(order)
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"{item['char']}: {item['num']}")
+
     print("============= END ===============")
-    
+
+
 main()
